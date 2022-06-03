@@ -27,6 +27,11 @@ func main() {
 	// handle routes
 	mux.HandleFunc("/", indexHandler)
 
+	// file server
+	fs := http.FileServer(http.Dir("./src/client/assets"))
+
+	mux.Handle("/src/client/assets/", http.StripPrefix("/src/client/assets/", fs))
+
 	// start server
 	log.Println("Server starting in port: " + port)
 	http.ListenAndServe(":"+port, mux)
