@@ -1,18 +1,13 @@
 package main
 
 import (
-	"html/template"
 	"log"
 	"net/http"
 	"os"
+	"todo/src/controllers"
+	"todo/src/routes/handlers"
+	"todo/src/services"
 )
-
-// introduce templates
-var tpl = template.Must(template.ParseFiles("./src/client/index.html"))
-
-func indexHandler(w http.ResponseWriter, r *http.Request) {
-	tpl.Execute(w, nil)
-}
 
 func main() {
 	// handle port
@@ -21,16 +16,15 @@ func main() {
 		port = "3000"
 	}
 
-	// multiplexer
-	mux := http.NewServeMux()
+	mux := services.InitApp()
 
-	// handle routes
-	mux.HandleFunc("/", indexHandler)
+	// someItem := models.Item{Description: string(time.Now().UnixNano()), IsComplete: false, Timestamp: time.Now().UnixNano()}
 
-	// file server
-	fs := http.FileServer(http.Dir("./src/client/assets"))
+	// insert a document
+	// controllers.InsertDocument(todosCollection, someItem)
 
-	mux.Handle("/src/client/assets/", http.StripPrefix("/src/client/assets/", fs))
+	// get all documents
+	controllers.GetAllDocuments(handlers.TodosCollection)
 
 	// start server
 	log.Println("Server starting in port: " + port)
