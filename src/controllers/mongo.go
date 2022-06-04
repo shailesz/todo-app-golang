@@ -7,6 +7,7 @@ import (
 	"todo/src/models"
 
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -49,6 +50,15 @@ func InsertDocument(collection *mongo.Collection, item models.Item) {
 	fmt.Println("Inserted a single document: ", insertResult.InsertedID)
 }
 
+// DeleteDocument delets a todo item from database.
+func DeleteDocument(collection *mongo.Collection, item primitive.ObjectID) {
+	deleteResult, err := collection.DeleteOne(context.TODO(), bson.M{"_id": item})
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println("Deleted a single document: ", deleteResult)
+}
+
 // GetAllDocuments gets all documents from the given collection.
 func GetAllDocuments(collection *mongo.Collection) []models.Item {
 	findOptions := options.Find()
@@ -79,9 +89,6 @@ func GetAllDocuments(collection *mongo.Collection) []models.Item {
 
 	// Close the cursor once finished
 	cur.Close(context.TODO())
-
-	// fmt.Printf("Found multiple documents (array of pointers): %+v\n", results)
-	fmt.Println(results)
 
 	return results
 }

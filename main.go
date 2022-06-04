@@ -4,8 +4,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"todo/src/controllers"
-	"todo/src/routes/handlers"
 	"todo/src/services"
 )
 
@@ -16,15 +14,8 @@ func main() {
 		port = "3000"
 	}
 
+	// init app
 	mux := services.InitApp()
-
-	// someItem := models.Item{Description: string(time.Now().UnixNano()), IsComplete: false, Timestamp: time.Now().UnixNano()}
-
-	// insert a document
-	// controllers.InsertDocument(todosCollection, someItem)
-
-	// get all documents
-	controllers.GetAllDocuments(handlers.TodosCollection)
 
 	// start server
 	log.Println("Server starting in port: " + port)
